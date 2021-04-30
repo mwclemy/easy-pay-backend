@@ -44,4 +44,26 @@ userController.login = async (req, res) => {
     }
 }
 
+
+userController.verify = async (req, res) => {
+    const userId = req.headers.authorization
+
+    if (userId) {
+        try {
+            const user = await models.user.findOne({
+                where: {
+                    id: userId
+                }
+            })
+            res.json({
+                user
+            })
+        } catch (error) {
+            res.status(404).json({ message: 'user not found.' })
+        }
+    }
+    else {
+        res.status(400).json({ message: 'user not found.' })
+    }
+}
 module.exports = userController
