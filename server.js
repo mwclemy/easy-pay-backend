@@ -3,7 +3,7 @@ const express = require('express')
 const userRoutes = require('./routes/userRoutes')
 const transactionRoutes = require('./routes/transactionRoutes')
 const app = express()
-const port = 3001
+const port = process.env.PORT || 3001
 
 app.use(express.json())
 app.use(require('cors')())
