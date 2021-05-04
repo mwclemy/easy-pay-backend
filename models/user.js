@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.user.hasMany(models.transaction, { foreignKey: 'senderId' })
+      models.user.hasMany(models.transaction, { foreignKey: 'receiverId' })
     }
   };
   user.init({
@@ -29,5 +31,26 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'user',
   });
+
+  user.addAmountToReceiver = async ({ receiver, amount }) => {
+    await user.update({
+      balance: parseFloat(receiver.balance) + amount
+    }, {
+      where: {
+        id: receiver.id
+      }
+    })
+  };
+
+  user.withDrawAmountFromSender = async ({ sender, amount }) => {
+    await user.update({
+      balance: parseFloat(sender.balance) - amount
+    }, {
+      where: {
+        id: sender.id
+      }
+    })
+  };
+
   return user;
 };

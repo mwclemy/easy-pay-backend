@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.transaction.belongsTo(models.user, { foreignKey: 'senderId', as: 'sender' });
+      models.transaction.belongsTo(models.user, { foreignKey: 'receiverId', as: 'receiver' });
+
     }
   };
   transaction.init({
@@ -22,5 +25,16 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'transaction',
   });
+
+  transaction.recordTransaction = async ({ sender, receiver, amount, reason }) => {
+    const result = await transaction.create({
+      amount: amount,
+      reason: reason,
+      senderId: sender.id,
+      receiverId: receiver.id
+    })
+
+    return result
+  }
   return transaction;
 };

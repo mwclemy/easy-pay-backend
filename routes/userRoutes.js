@@ -7,5 +7,6 @@ userRoutes.post('/', userController.create)
 userRoutes.get('/', userController.getAll)
 userRoutes.post('/login', userController.login)
 userRoutes.get('/verify', userController.verify)
-
+userRoutes.post('/addCash', userController.addCash)
+userRoutes.post('/sendCash', userController.sendCash)
 module.exports = userRoutes
